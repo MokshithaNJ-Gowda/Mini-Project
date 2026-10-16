@@ -1,0 +1,559 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app="campusConnectApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect | Beyond Classrooms</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+</head>
+
+<body ng-controller="MainController as main">
+
+<div class="ambient ambient-one"></div>
+<div class="ambient ambient-two"></div>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <a href="#!/dashboard" class="brand">
+            <div class="brand-logo"><span>C</span><i>+</i></div>
+            <div>
+                <strong>campus<span>connect</span></strong>
+                <small>THE DIGITAL CAMPUS</small>
+            </div>
+        </a>
+
+        <div class="workspace">
+            <span class="online-dot"></span>
+            <span>STUDENT WORKSPACE</span>
+        </div>
+
+        <p class="nav-label">OVERVIEW</p>
+        <nav>
+            <a href="#!/dashboard" ng-class="{active: main.page === 'dashboard'}">
+                <span class="nav-icon">◈</span> Command Center
+                <span class="nav-arrow">↗</span>
+            </a>
+            <a href="#!/students" ng-class="{active: main.page === 'students'}">
+                <span class="nav-icon">♙</span> Student Universe
+            </a>
+            <a href="#!/courses" ng-class="{active: main.page === 'courses'}">
+                <span class="nav-icon">▤</span> Learning Space
+            </a>
+            <a href="#!/attendance" ng-class="{active: main.page === 'attendance'}">
+                <span class="nav-icon">◷</span> Attendance
+            </a>
+            <a href="#!/assignments" ng-class="{active: main.page === 'assignments'}">
+                <span class="nav-icon">✳</span> Mission Board
+            </a>
+        </nav>
+
+        <p class="nav-label">MANAGEMENT</p>
+        <nav>
+            <a href="#!/register" ng-class="{active: main.page === 'register'}">
+                <span class="nav-icon">＋</span> New Student
+            </a>
+            <a href="#!/api" ng-class="{active: main.page === 'api'}">
+                <span class="nav-icon">⌘</span> Live API Lab
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="mini-orbit">✦</div>
+            <strong>Keep exploring.</strong>
+            <p>Your next big idea starts on campus.</p>
+            <div class="side-progress"><span></span></div>
+            <small>LEARN · BUILD · GROW</small>
+        </div>
+
+        <div class="user-mini">
+            <div class="user-avatar">CC</div>
+            <div>
+                <strong>Campus Admin</strong>
+                <small>Demo workspace</small>
+            </div>
+            <span>●</span>
+        </div>
+    </aside>
+
+    <main class="main-area">
+
+        <header class="topbar">
+            <div class="breadcrumb">
+                <span>WORKSPACE</span>
+                <b>/</b>
+                <strong>{{ main.title }}</strong>
+            </div>
+
+            <div class="top-actions">
+                <label class="search-box">
+                    <span>⌕</span>
+                    <input type="search"
+                           ng-model="main.search"
+                           placeholder="Search students...">
+                    <kbd>LIVE</kbd>
+                </label>
+
+                <button class="icon-button" ng-click="main.toggleTheme()"
+                        title="Toggle appearance">
+                    {{ main.dark ? '☼' : '☾' }}
+                </button>
+
+                <div class="top-avatar">CC</div>
+            </div>
+        </header>
+
+        <div class="route-content" ng-view></div>
+
+        <footer class="footer">
+            <span>© 2026 CAMPUSCONNECT</span>
+            <span>DESIGNED FOR THE NEXT GENERATION <b>✦</b></span>
+        </footer>
+    </main>
+</div>
+
+<!-- DASHBOARD -->
+<script type="text/ng-template" id="dashboard.html">
+    <section class="hero">
+        <div class="hero-copy">
+            <div class="eyebrow"><span class="online-dot"></span> YOUR CAMPUS, REIMAGINED</div>
+
+            <h1>Think bigger.<br>
+                <span>Go beyond.</span>
+            </h1>
+
+            <p>Your academic world, connected in one intelligent space.
+               Discover your progress, organize your work, and make
+               every day count.</p>
+
+            <div class="hero-actions">
+                <a href="#!/courses" class="button-primary">
+                    Explore learning <span>↗</span>
+                </a>
+                <a href="#!/students" class="button-ghost">
+                    Meet the community →
+                </a>
+            </div>
+
+            <div class="hero-caption">
+                <span class="caption-line"></span>
+                <span>YOUR FUTURE IS A WORK IN PROGRESS.</span>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="orbit orbit-three"></div>
+            <div class="planet">
+                <div class="planet-inner">C<span>+</span></div>
+            </div>
+            <div class="float-card float-card-top">
+                <span class="float-icon">✦</span>
+                <div><strong>Stay curious</strong><small>Ideas become impact</small></div>
+            </div>
+            <div class="float-card float-card-bottom">
+                <span class="float-icon green-icon">↗</span>
+                <div><strong>{{ students.length }} learners</strong><small>Growing together</small></div>
+            </div>
+            <div class="spark spark-one">✦</div>
+            <div class="spark spark-two">✧</div>
+        </div>
+    </section>
+
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">CAMPUS PULSE / 01</div>
+            <h2>Your campus at a glance<span>.</span></h2>
+        </div>
+        <span class="live-tag"><i></i> LIVE DEMO DATA</span>
+    </div>
+
+    <div class="metric-grid">
+        <article class="metric-card">
+            <div class="metric-top"><span>01 / COMMUNITY</span><span class="metric-symbol">♙</span></div>
+            <p>Total students</p>
+            <h3>{{ students.length | number }}</h3>
+            <div class="metric-foot"><span class="metric-bar purple-bar"></span>Student directory</div>
+        </article>
+
+        <article class="metric-card">
+            <div class="metric-top"><span>02 / KNOWLEDGE</span><span class="metric-symbol">▤</span></div>
+            <p>Active courses</p>
+            <h3>{{ courses.length | number:'2' }}</h3>
+            <div class="metric-foot"><span class="metric-bar blue-bar"></span>Learning pathways</div>
+        </article>
+
+        <article class="metric-card feature-metric">
+            <div class="metric-top"><span>03 / CONSISTENCY</span><span class="metric-symbol">◉</span></div>
+            <p>Average attendance</p>
+            <h3>{{ averageAttendance() | number:1 }}<small>%</small></h3>
+            <div class="metric-foot"><span class="metric-bar green-bar"></span>Across registered students</div>
+        </article>
+
+        <article class="metric-card">
+            <div class="metric-top"><span>04 / PRODUCTIVITY</span><span class="metric-symbol">✳</span></div>
+            <p>Open assignments</p>
+            <h3>{{ openAssignments() }}</h3>
+            <div class="metric-foot"><span class="metric-bar orange-bar"></span>Tasks to keep moving</div>
+        </article>
+    </div>
+
+    <div class="dashboard-grid">
+        <section class="glass-panel">
+            <div class="panel-heading">
+                <div>
+                    <div class="eyebrow">THE COMMUNITY / 02</div>
+                    <h2>People of Campus<span>.</span></h2>
+                </div>
+                <a href="#!/students" class="text-link">Explore all ↗</a>
+            </div>
+
+            <div class="people-list">
+                <article class="person-row"
+                         ng-repeat="s in students | filter:globalSearch | limitTo:4">
+                    <div class="person-avatar" ng-class="'avatar-' + ($index % 4)">
+                        {{ s.name.charAt(0) }}
+                    </div>
+                    <div class="person-info">
+                        <strong>{{ s.name }}</strong>
+                        <small>{{ s.department }} · {{ s.email }}</small>
+                    </div>
+                    <div class="person-grade">
+                        <strong>{{ s.cgpa | number:2 }}</strong>
+                        <small>CGPA</small>
+                    </div>
+                    <span class="row-arrow">↗</span>
+                </article>
+            </div>
+        </section>
+
+        <section class="glass-panel mission-panel">
+            <div class="panel-heading">
+                <div>
+                    <div class="eyebrow">UP NEXT / 03</div>
+                    <h2>Mission board<span>.</span></h2>
+                </div>
+                <a href="#!/assignments" class="text-link">All tasks ↗</a>
+            </div>
+
+            <article class="mission-row"
+                     ng-repeat="task in assignments | orderBy:'dueDate' | limitTo:3">
+                <div class="mission-date">
+                    <strong>{{ task.dueDate | date:'dd' }}</strong>
+                    <small>{{ task.dueDate | date:'MMM' }}</small>
+                </div>
+                <div class="mission-info">
+                    <strong>{{ task.title }}</strong>
+                    <small>{{ task.course }}</small>
+                </div>
+                <span class="mission-dot"
+                      ng-class="{'done-dot': task.status === 'Completed'}"></span>
+            </article>
+
+            <a href="#!/assignments" class="mission-footer">
+                Open mission control <span>→</span>
+            </a>
+        </section>
+    </div>
+
+    <section class="bottom-banner">
+        <div class="banner-symbol">✳</div>
+        <div>
+            <span class="eyebrow">YOUR NEXT CHAPTER</span>
+            <h2>Big ideas need a place to grow.</h2>
+            <p>Start by exploring a course or connecting with your campus community.</p>
+        </div>
+        <a href="#!/register" class="button-primary">Join the directory ↗</a>
+    </section>
+</script>
+
+<!-- STUDENTS -->
+<script type="text/ng-template" id="students.html">
+    <section class="page-intro">
+        <div class="eyebrow">THE PEOPLE / 04</div>
+        <h1>Student <span>Universe.</span></h1>
+        <p>Every learner has a story. Discover the community.</p>
+    </section>
+
+    <section class="glass-panel">
+        <div class="toolbar">
+            <input ng-model="searchText" placeholder="Search names, email or department...">
+            <select ng-model="departmentFilter">
+                <option value="">All departments</option>
+                <option>CSE</option><option>ECE</option>
+                <option>AIML</option><option>ISE</option>
+            </select>
+            <select ng-model="sortField">
+                <option value="name">Name A–Z</option>
+                <option value="-cgpa">Highest CGPA</option>
+                <option value="-attendance">Highest attendance</option>
+            </select>
+            <a href="#!/register" class="button-primary">+ New student</a>
+        </div>
+
+        <div class="student-grid">
+            <article class="student-card"
+                ng-repeat="s in students |
+                    filter:globalSearch |
+                    filter:searchText |
+                    filter:{department:departmentFilter} |
+                    orderBy:sortField">
+
+                <div class="student-card-top">
+                    <div class="person-avatar large-avatar"
+                         ng-class="'avatar-' + ($index % 4)">
+                        {{ s.name.charAt(0) }}
+                    </div>
+                    <span class="status-chip"
+                          ng-class="s.attendance >= 75 ? 'chip-green' : 'chip-orange'">
+                        {{ s.attendance >= 75 ? 'On track' : 'Needs attention' }}
+                    </span>
+                </div>
+
+                <h3>{{ s.name }}</h3>
+                <p>{{ s.email }}</p>
+                <span class="department-chip">{{ s.department }} DEPARTMENT</span>
+
+                <div class="student-stats">
+                    <div><small>ATTENDANCE</small><strong>{{ s.attendance }}%</strong></div>
+                    <div><small>CGPA</small><strong>{{ s.cgpa | number:2 }}</strong></div>
+                </div>
+
+                <div class="mini-progress">
+                    <span ng-style="{width: s.attendance + '%'}"
+                          ng-class="s.attendance >= 75 ? 'bar-green' : 'bar-orange'"></span>
+                </div>
+
+                <button class="remove-link" ng-click="removeStudent(s.id)">
+                    Remove from directory ×
+                </button>
+            </article>
+        </div>
+
+        <p class="empty-state" ng-if="filteredCount() === 0">
+            No students match your search. Try a different keyword.
+        </p>
+    </section>
+</script>
+
+<!-- COURSES -->
+<script type="text/ng-template" id="courses.html">
+    <section class="page-intro">
+        <div class="eyebrow">THE LEARNING LAB / 05</div>
+        <h1>Build your <span>next skill.</span></h1>
+        <p>Explore learning pathways and monitor your course progress.</p>
+    </section>
+
+    <div class="course-grid">
+        <article class="course-card" ng-repeat="c in courses">
+            <div class="course-art" ng-class="'course-art-' + ($index % 4)">
+                <span>{{ c.code }}</span>
+                <div class="course-orb">✳</div>
+                <small>LEARNING PATHWAY / 0{{ $index + 1 }}</small>
+            </div>
+            <div class="course-content">
+                <span class="department-chip">{{ c.category }}</span>
+                <h2>{{ c.name }}</h2>
+                <p>Mentor: {{ c.instructor }}</p>
+                <div class="course-progress-label">
+                    <span>Learning progress</span><strong>{{ c.progress }}%</strong>
+                </div>
+                <div class="progress-track">
+                    <span ng-style="{width: c.progress + '%'}"></span>
+                </div>
+            </div>
+        </article>
+    </div>
+</script>
+
+<!-- ATTENDANCE -->
+<script type="text/ng-template" id="attendance.html">
+    <section class="page-intro">
+        <div class="eyebrow">CONSISTENCY / 06</div>
+        <h1>Show up. <span>Move forward.</span></h1>
+        <p>Monitor attendance and identify where support may be needed.</p>
+    </section>
+
+    <section class="glass-panel">
+        <div class="panel-heading">
+            <div><h2>Attendance intelligence</h2><p>Demo records · 75% threshold</p></div>
+            <span class="live-tag"><i></i> TRACKER</span>
+        </div>
+
+        <div class="attendance-list">
+            <article class="attendance-row" ng-repeat="s in students | orderBy:'attendance'">
+                <div class="person-avatar" ng-class="'avatar-' + ($index % 4)">
+                    {{ s.name.charAt(0) }}
+                </div>
+                <div class="attendance-person">
+                    <strong>{{ s.name }}</strong>
+                    <small>{{ s.department }}</small>
+                </div>
+                <div class="attendance-progress">
+                    <div class="progress-track">
+                        <span ng-style="{width: s.attendance + '%'}"
+                              ng-class="s.attendance >= 75 ? 'bar-green' : 'bar-orange'"></span>
+                    </div>
+                </div>
+                <strong class="attendance-value">{{ s.attendance }}%</strong>
+                <span class="status-chip"
+                      ng-class="s.attendance >= 75 ? 'chip-green' : 'chip-orange'">
+                    {{ s.attendance >= 75 ? 'On track' : 'Below threshold' }}
+                </span>
+            </article>
+        </div>
+    </section>
+</script>
+
+<!-- ASSIGNMENTS -->
+<script type="text/ng-template" id="assignments.html">
+    <section class="page-intro">
+        <div class="eyebrow">MISSION CONTROL / 07</div>
+        <h1>Make progress <span>visible.</span></h1>
+        <p>Track your academic tasks, deadlines and completion status.</p>
+    </section>
+
+    <section class="glass-panel">
+        <div class="panel-heading">
+            <div><h2>All missions</h2><p>Update a task to track its progress.</p></div>
+            <span class="live-tag">{{ assignments.length }} TASKS</span>
+        </div>
+
+        <article class="task-row" ng-repeat="task in assignments | orderBy:'dueDate'">
+            <div class="task-number">0{{ $index + 1 }}</div>
+            <div class="task-main">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.course }} · Due {{ task.dueDate | date:'dd MMM yyyy' }}</p>
+            </div>
+            <select ng-model="task.status"
+                    ng-options="status for status in assignmentStatuses">
+            </select>
+            <span class="task-check"
+                  ng-class="{'task-complete': task.status === 'Completed'}">
+                {{ task.status === 'Completed' ? '✓' : '↗' }}
+            </span>
+        </article>
+    </section>
+</script>
+
+<!-- REGISTER -->
+<script type="text/ng-template" id="register.html">
+    <section class="page-intro">
+        <div class="eyebrow">GROW THE COMMUNITY / 08</div>
+        <h1>Every journey <span>starts here.</span></h1>
+        <p>Add a student profile to the CampusConnect directory.</p>
+    </section>
+
+    <section class="glass-panel form-panel">
+        <div class="form-heading-art">✳</div>
+        <div class="eyebrow">NEW PROFILE / STUDENT RECORD</div>
+        <h2>Introduce a new learner.</h2>
+        <p class="form-description">Fill in the details below to create a demo student record.</p>
+
+        <form name="studentForm" ng-submit="addStudent(studentForm)" novalidate>
+            <div class="form-grid">
+                <div class="form-field">
+                    <label>FULL NAME</label>
+                    <input name="name" ng-model="newStudent.name"
+                           placeholder="e.g. Ananya Shetty" required minlength="3">
+                    <small class="error" ng-if="studentForm.name.$touched && studentForm.name.$invalid">
+                        Enter a name with at least 3 characters.
+                    </small>
+                </div>
+                <div class="form-field">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" name="email" ng-model="newStudent.email"
+                           placeholder="student@example.com" required>
+                    <small class="error" ng-if="studentForm.email.$touched && studentForm.email.$invalid">
+                        Enter a valid email address.
+                    </small>
+                </div>
+                <div class="form-field">
+                    <label>DEPARTMENT</label>
+                    <select name="department" ng-model="newStudent.department" required>
+                        <option value="">Choose department</option>
+                        <option>CSE</option><option>ECE</option>
+                        <option>AIML</option><option>ISE</option>
+                    </select>
+                </div>
+                <div class="form-field">
+                    <label>CGPA (0–10)</label>
+                    <input type="number" name="cgpa" ng-model="newStudent.cgpa"
+                           min="0" max="10" step="0.01" placeholder="8.50" required>
+                    <small class="error" ng-if="studentForm.cgpa.$touched && studentForm.cgpa.$invalid">
+                        CGPA must be between 0 and 10.
+                    </small>
+                </div>
+                <div class="form-field full-field">
+                    <label>ATTENDANCE PERCENTAGE (0–100)</label>
+                    <input type="number" name="attendance" ng-model="newStudent.attendance"
+                           min="0" max="100" placeholder="85" required>
+                </div>
+            </div>
+
+            <div class="success-message" ng-if="formMessage">{{ formMessage }}</div>
+
+            <button type="submit" class="button-primary"
+                    ng-disabled="studentForm.$invalid">
+                Create student profile ↗
+            </button>
+        </form>
+    </section>
+</script>
+
+<!-- API -->
+<script type="text/ng-template" id="api.html">
+    <section class="page-intro">
+        <div class="eyebrow">DEVELOPER ZONE / 09</div>
+        <h1>Connect to the <span>outside world.</span></h1>
+        <p>Explore AJAX and REST API integration with AngularJS $http.</p>
+    </section>
+
+    <section class="glass-panel api-panel">
+        <div class="api-visual">⇄</div>
+        <div class="eyebrow">REST ENDPOINT / GET REQUEST</div>
+        <h2>Live API laboratory.</h2>
+        <p>Fetch demonstration users from a public JSON API without reloading the page.</p>
+
+        <div class="endpoint">
+            <span>GET</span>
+            <code>jsonplaceholder.typicode.com/users</code>
+        </div>
+
+        <button class="button-primary" ng-click="loadApiStudents()" ng-disabled="apiLoading">
+            {{ apiLoading ? 'Connecting...' : 'Execute request ↗' }}
+        </button>
+
+        <p class="api-error" ng-if="apiError">{{ apiError }}</p>
+        <p class="api-success" ng-if="apiStudents.length">
+            ✓ Request completed · {{ apiStudents.length }} sample records received
+        </p>
+
+        <div class="table-scroll" ng-if="apiStudents.length">
+            <table>
+                <thead><tr><th>ID</th><th>NAME</th><th>EMAIL</th><th>COMPANY</th></tr></thead>
+                <tbody>
+                    <tr ng-repeat="person in apiStudents">
+                        <td>{{ person.id }}</td>
+                        <td>{{ person.name }}</td>
+                        <td>{{ person.email }}</td>
+                        <td>{{ person.company.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</script>
+
+<script src="app.js"></script>
+</body>
+</html>
